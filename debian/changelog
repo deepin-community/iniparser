@@ -1,0 +1,44 @@
+iniparser (4.1-4) unstable; urgency=medium
+
+  * Add an initial Gitlab CI config file
+  * debian/.gitlab-ci.yml: Update image used for Gitlab CI
+  * Update .gitlab-ci.yml based on Salsa CI Team's template
+  * GitLab CI/Lintian: install dpkg-dev, that ships dpkg-architecture, needed
+    to run some Lintian checks
+  * Replace home-made GitLab CI with the standard Salsa pipeline
+  * Bump Debhelper compat level to 12
+  * Declare compliance with Debian policy 4.3.0
+  * Add Build-Depends-Package to debian/libiniparser1.symbols
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 28 Dec 2018 17:38:41 +0100
+
+iniparser (4.1-3) unstable; urgency=medium
+
+  * Update copyright years for debian/* packaging files
+  * Bump Debhelper compat level to 11
+  * Drop Build-Depends on autotools-dev
+  * Declare compliance with Debian policy 4.1.3
+  * Update Vcs-* fields for switch to salsa.debian.org
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Mon, 19 Mar 2018 10:52:52 +0100
+
+iniparser (4.1-2) unstable; urgency=medium
+
+  * Set Multi-Arch: foreign for libiniparser-doc documentation package
+  * Declare compliance with Debian policy 4.1.2
+  * Set Rules-Requires-Root to no
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 03 Dec 2017 09:39:21 +0100
+
+iniparser (4.1-1) unstable; urgency=medium
+
+  * New upstream version 4.1
+  * Update symbols for 4.1
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 02 Nov 2017 12:36:45 +0100
+
+iniparser (4.0-1) unstable; urgency=low
+
+  * Initial release. (Closes: #738850)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 17 Oct 2017 22:05:58 +0200
