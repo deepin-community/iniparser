@@ -1,0 +1,26 @@
+From: Dan Bungert <daniel.bungert@canonical.com>
+Date: Tue, 16 Mar 2021 12:34:49 -0600
+Subject: [2/2] Don't send a const ptr to asprintf()
+Origin: https://github.com/dbungert/iniparser/commit/ef9975dac693c411bf35fcf97e9637822b910fb5
+Bug: https://github.com/ndevilla/iniparser/pull/132
+
+---
+ test/test_iniparser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/test_iniparser.c b/test/test_iniparser.c
+index 6c235a6a4007..913b5cd4bf6f 100644
+--- a/test/test_iniparser.c
++++ b/test/test_iniparser.c
+@@ -345,7 +345,7 @@ void Test_iniparser_getlongint(CuTest *tc)
+     unsigned i;
+     char key_name[64];
+     dictionary *dic;
+-    struct { long int num; const char *value; } good_val[] = {
++    struct { long int num; char *value; } good_val[] = {
+         { 0, "0" },
+         { 1, "1" },
+         { -1, "-1" },
+-- 
+2.34.0
+

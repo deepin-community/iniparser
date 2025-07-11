@@ -1,1 +1,7 @@
 Add-CMake-support.patch
+Fix-buffer-overflow-from-sprintf.patch
+Fail-testrun-on-test-failure.patch
+Updated-test-for-when-long-int-is-not-8-byte.patch
+Don-t-send-a-const-ptr-to-asprintf.patch
+test-testiniparser.c-fix-missing-comma-in-token-test.patch
+Handle-null-return-from-iniparser_getstring.patch
