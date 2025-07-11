@@ -1,3 +1,40 @@
+iniparser (4.1-7) unstable; urgency=medium
+
+  * Handle null return from iniparser_getstring (CVE-2023-33461)
+  * Declare compliance with Debian policy 4.6.2
+  * Update copyright years for debian/* packaging files
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 16 Sep 2023 16:01:05 +0200
+
+iniparser (4.1-6) unstable; urgency=medium
+
+  * debian/watch: Watch for tagged releases on github
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 16 Dec 2021 09:43:45 +0100
+
+iniparser (4.1-5) unstable; urgency=medium
+
+  [ Salvatore Bonaccorso ]
+  * Rename and update salsa-ci.yml based on Salsa CI Team's template
+  * Bump Debhelper compat level to 13
+  * Declare compliance with Debian policy 4.6.0
+  * Fix buffer overflow from sprintf (Closes: #985097)
+  * Fail testrun on test failure (Closes: #985099)
+  * Update copyright years for debian/* packaging files
+  * Updated test for when long int is not 8 byte
+  * Don't send a const ptr to asprintf()
+  * test/testiniparser.c: fix missing comma in token test list
+
+  [ Debian Janitor ]
+  * Replace use of deprecated $ADTTMP with $AUTOPKGTEST_TMP.
+  * Set upstream metadata fields: Bug-Submit, Repository.
+  * Update pattern for GitHub archive URLs from /<org>/<repo>/tags
+    page/<org>/<repo>/archive/<tag> -> /<org>/<repo>/archive/refs/tags/<tag>.
+  * Remove obsolete fields Contact, Name from debian/upstream/metadata
+    (already present in machine-readable debian/copyright).
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 05 Dec 2021 10:06:09 +0100
+
 iniparser (4.1-4) unstable; urgency=medium
 
   * Add an initial Gitlab CI config file

@@ -13,7 +13,7 @@ License: Zlib
 
 Files: debian/*
 Copyright: 2014, Klee Dienes <klee@mit.edu>
- 2017-2018, Salvatore Bonaccorso <carnil@debian.org>
+ 2017-2023, Salvatore Bonaccorso <carnil@debian.org>
 License: Expat
 
 License: Zlib

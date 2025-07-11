@@ -1,0 +1,34 @@
+From: Steve Beattie <steve.beattie@canonical.com>
+Date: Fri, 16 Apr 2021 17:06:34 -0700
+Subject: test/testiniparser.c: fix missing comma in token test list
+Origin: https://github.com/stevebeattie/iniparser/commit/fbb5e60c9a598f24edcd91776849603986e89e6d
+Bug: https://github.com/ndevilla/iniparser/pull/133
+
+Fix missing comma separating two test cases in the
+Test_iniparser_getboolean() token_true list. Without this, the 'Y'
+testcase was being skipped.
+
+(Issue was found by coverity.)
+
+Signed-off-by: Steve Beattie <steve.beattie@canonical.com>
+Bug: https://github.com/ndevilla/iniparser/issues/131
+---
+ test/test_iniparser.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/test_iniparser.c b/test/test_iniparser.c
+index b7cd5fc5b758..6c42e53fb654 100644
+--- a/test/test_iniparser.c
++++ b/test/test_iniparser.c
+@@ -455,7 +455,7 @@ void Test_iniparser_getboolean(CuTest *tc)
+         "T",
+         "yes",
+         "y",
+-        "YES"
++        "YES",
+         "Y",
+         NULL
+     };
+-- 
+2.34.0
+

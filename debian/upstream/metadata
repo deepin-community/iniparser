@@ -1,5 +1,4 @@
 Bug-Database: https://github.com/ndevilla/iniparser/issues
-Contact: Nicolas Devillard <ndevilla@free.fr>
-Name: iniparser
-Repository: https://github.com/ndevilla/iniparser
+Bug-Submit: https://github.com/ndevilla/iniparser/issues/new
+Repository: https://github.com/ndevilla/iniparser.git
 Repository-Browse: https://github.com/ndevilla/iniparser
