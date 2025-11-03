@@ -9,6 +9,9 @@
 /*---------------------------- Includes ------------------------------------*/
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <inttypes.h>
 #include "iniparser.h"
 
 /*---------------------------- Defines -------------------------------------*/
@@ -96,9 +99,9 @@ static unsigned strstrip(char * s)
     if (s==NULL) return 0;
 
     last = s + strlen(s);
-    while (isspace((int)*s) && *s) s++;
+    while (isspace((unsigned char)*s) && *s) s++;
     while (last > s) {
-        if (!isspace((int)*(last-1)))
+        if (!isspace((unsigned char)*(last-1)))
             break ;
         last -- ;
     }
@@ -163,7 +166,7 @@ void iniparser_set_error_callback(int (*errback)(const char *, ...))
 /*--------------------------------------------------------------------------*/
 int iniparser_getnsec(const dictionary * d)
 {
-    int i ;
+    size_t i ;
     int nsec ;
 
     if (d==NULL) return -1 ;
@@ -194,7 +197,7 @@ int iniparser_getnsec(const dictionary * d)
 /*--------------------------------------------------------------------------*/
 const char * iniparser_getsecname(const dictionary * d, int n)
 {
-    int i ;
+    size_t i ;
     int foundsec ;
 
     if (d==NULL || n<0) return NULL ;
@@ -229,7 +232,7 @@ const char * iniparser_getsecname(const dictionary * d, int n)
 /*--------------------------------------------------------------------------*/
 void iniparser_dump(const dictionary * d, FILE * f)
 {
-    int     i ;
+    size_t i ;
 
     if (d==NULL || f==NULL) return ;
     for (i=0 ; i<d->size ; i++) {
@@ -242,6 +245,26 @@ void iniparser_dump(const dictionary * d, FILE * f)
         }
     }
     return ;
+}
+
+static void escape_value(char *escaped, char *value) {
+    char c;
+    int v = 0;
+    int e = 0;
+
+    if(!escaped || !value)
+        return;
+
+    while((c = value[v]) != '\0') {
+        if(c == '\\' || c == '"') {
+            escaped[e] = '\\';
+            e++;
+        }
+        escaped[e] = c;
+        v++;
+        e++;
+    }
+    escaped[e] = '\0';
 }
 
 /*-------------------------------------------------------------------------*/
@@ -257,9 +280,10 @@ void iniparser_dump(const dictionary * d, FILE * f)
 /*--------------------------------------------------------------------------*/
 void iniparser_dump_ini(const dictionary * d, FILE * f)
 {
-    int          i ;
-    int          nsec ;
+    size_t       i ;
+    size_t       nsec ;
     const char * secname ;
+    char escaped[(ASCIILINESZ * 2) + 2] = "";
 
     if (d==NULL || f==NULL) return ;
 
@@ -269,7 +293,8 @@ void iniparser_dump_ini(const dictionary * d, FILE * f)
         for (i=0 ; i<d->size ; i++) {
             if (d->key[i]==NULL)
                 continue ;
-            fprintf(f, "%s = %s\n", d->key[i], d->val[i]);
+            escape_value(escaped, d->val[i]);
+            fprintf(f, "%s = \"%s\"\n", d->key[i], escaped);
         }
         return ;
     }
@@ -295,12 +320,14 @@ void iniparser_dump_ini(const dictionary * d, FILE * f)
 /*--------------------------------------------------------------------------*/
 void iniparser_dumpsection_ini(const dictionary * d, const char * s, FILE * f)
 {
-    int     j ;
+    size_t  j ;
     char    keym[ASCIILINESZ+1];
     int     seclen ;
+    char escaped[(ASCIILINESZ * 2) + 2] = "";
 
-    if (d==NULL || f==NULL) return ;
-    if (! iniparser_find_entry(d, s)) return ;
+    if (d==NULL || f==NULL) return;
+    if (! iniparser_find_entry(d, s)) return;
+    if (strlen(s) > sizeof(keym)) return;
 
     seclen  = (int)strlen(s);
     fprintf(f, "\n[%s]\n", s);
@@ -309,10 +336,8 @@ void iniparser_dumpsection_ini(const dictionary * d, const char * s, FILE * f)
         if (d->key[j]==NULL)
             continue ;
         if (!strncmp(d->key[j], keym, seclen+1)) {
-            fprintf(f,
-                    "%-30s = %s\n",
-                    d->key[j]+seclen+1,
-                    d->val[j] ? d->val[j] : "");
+            escape_value(escaped, d->val[j]);
+            fprintf(f, "%-30s = \"%s\"\n", d->key[j]+seclen+1, escaped);
         }
     }
     fprintf(f, "\n");
@@ -331,7 +356,7 @@ int iniparser_getsecnkeys(const dictionary * d, const char * s)
 {
     int     seclen, nkeys ;
     char    keym[ASCIILINESZ+1];
-    int j ;
+    size_t  j ;
 
     nkeys = 0;
 
@@ -371,13 +396,13 @@ int iniparser_getsecnkeys(const dictionary * d, const char * s)
 /*--------------------------------------------------------------------------*/
 const char ** iniparser_getseckeys(const dictionary * d, const char * s, const char ** keys)
 {
-    int i, j, seclen ;
+    size_t i, j, seclen ;
     char keym[ASCIILINESZ+1];
 
     if (d==NULL || keys==NULL) return NULL;
     if (! iniparser_find_entry(d, s)) return NULL;
 
-    seclen  = (int)strlen(s);
+    seclen  = strlen(s);
     strlwc(s, keym, sizeof(keym));
     keym[seclen] = ':';
 
@@ -456,9 +481,28 @@ long int iniparser_getlongint(const dictionary * d, const char * key, long int n
     const char * str ;
 
     str = iniparser_getstring(d, key, INI_INVALID_KEY);
-    if (str==INI_INVALID_KEY) return notfound ;
+    if (str==NULL || str==INI_INVALID_KEY) return notfound ;
     return strtol(str, NULL, 0);
 }
+
+int64_t iniparser_getint64(const dictionary * d, const char * key, int64_t notfound)
+{
+    const char * str ;
+
+    str = iniparser_getstring(d, key, INI_INVALID_KEY);
+    if (str==NULL || str==INI_INVALID_KEY) return notfound ;
+    return strtoimax(str, NULL, 0);
+}
+
+uint64_t iniparser_getuint64(const dictionary * d, const char * key, uint64_t notfound)
+{
+    const char * str ;
+
+    str = iniparser_getstring(d, key, INI_INVALID_KEY);
+    if (str==NULL || str==INI_INVALID_KEY) return notfound ;
+    return strtoumax(str, NULL, 0);
+}
+
 
 
 /*-------------------------------------------------------------------------*/
@@ -511,7 +555,7 @@ double iniparser_getdouble(const dictionary * d, const char * key, double notfou
     const char * str ;
 
     str = iniparser_getstring(d, key, INI_INVALID_KEY);
-    if (str==INI_INVALID_KEY) return notfound ;
+    if (str==NULL || str==INI_INVALID_KEY) return notfound ;
     return atof(str);
 }
 
@@ -553,7 +597,7 @@ int iniparser_getboolean(const dictionary * d, const char * key, int notfound)
     const char * c ;
 
     c = iniparser_getstring(d, key, INI_INVALID_KEY);
-    if (c==INI_INVALID_KEY) return notfound ;
+    if (c==NULL || c==INI_INVALID_KEY) return notfound ;
     if (c[0]=='y' || c[0]=='Y' || c[0]=='1' || c[0]=='t' || c[0]=='T') {
         ret = 1 ;
     } else if (c[0]=='n' || c[0]=='N' || c[0]=='0' || c[0]=='f' || c[0]=='F') {
@@ -600,8 +644,17 @@ int iniparser_find_entry(const dictionary * ini, const char * entry)
 /*--------------------------------------------------------------------------*/
 int iniparser_set(dictionary * ini, const char * entry, const char * val)
 {
-    char tmp_str[ASCIILINESZ+1];
-    return dictionary_set(ini, strlwc(entry, tmp_str, sizeof(tmp_str)), val) ;
+    char tmp_key[ASCIILINESZ+1] = {0};
+    char tmp_val[ASCIILINESZ+1] = {0};
+    size_t len;
+
+    if(val) {
+        len = strlen(val);
+        len = len > ASCIILINESZ ? ASCIILINESZ : len;
+        memcpy(tmp_val, val, len) ;
+        val = tmp_val;
+    }
+    return dictionary_set(ini, strlwc(entry, tmp_key, sizeof(tmp_key)), val);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -618,6 +671,44 @@ void iniparser_unset(dictionary * ini, const char * entry)
 {
     char tmp_str[ASCIILINESZ+1];
     dictionary_unset(ini, strlwc(entry, tmp_str, sizeof(tmp_str)));
+}
+
+static void parse_quoted_value(char *value, char quote) {
+    char c;
+    char *quoted;
+    int q = 0, v = 0;
+    int esc = 0;
+
+    if(!value)
+        return;
+
+    quoted = xstrdup(value);
+
+    if(!quoted) {
+        iniparser_error_callback("iniparser: memory allocation failure\n");
+        goto end_of_value;
+    }
+
+    while((c = quoted[q]) != '\0') {
+        if(!esc) {
+            if(c == '\\') {
+                esc = 1;
+                q++;
+                continue;
+            }
+
+            if(c == quote) {
+                goto end_of_value;
+            }
+        }
+        esc = 0;
+        value[v] = c;
+        v++;
+        q++;
+    }
+end_of_value:
+    value[v] = '\0';
+    free(quoted);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -639,6 +730,7 @@ static line_status iniparser_line(
     line_status sta ;
     char * line = NULL;
     size_t      len ;
+    int d_quote;
 
     line = xstrdup(input_line);
     len = strstrip(line);
@@ -651,16 +743,26 @@ static line_status iniparser_line(
         /* Comment line */
         sta = LINE_COMMENT ;
     } else if (line[0]=='[' && line[len-1]==']') {
-        /* Section name */
-        sscanf(line, "[%[^]]", section);
+        /* Section name without opening square bracket */
+        sscanf(line, "[%[^\n]", section);
+        len = strlen(section);
+        /* Section name without closing square bracket */
+        if(section[len-1] == ']')
+        {
+            section[len-1] = '\0';
+        }
         strstrip(section);
         strlwc(section, section, len);
         sta = LINE_SECTION ;
-    } else if (sscanf (line, "%[^=] = \"%[^\"]\"", key, value) == 2
-           ||  sscanf (line, "%[^=] = '%[^\']'",   key, value) == 2) {
+    } else if ((d_quote = sscanf (line, "%[^=] = \"%[^\n]\"", key, value)) == 2
+               ||  sscanf (line, "%[^=] = '%[^\n]'",   key, value) == 2) {
         /* Usual key=value with quotes, with or without comments */
         strstrip(key);
         strlwc(key, key, len);
+        if(d_quote == 2)
+            parse_quoted_value(value, '"');
+        else
+            parse_quoted_value(value, '\'');
         /* Don't strip spaces from values surrounded with quotes */
         sta = LINE_VALUE ;
     } else if (sscanf (line, "%[^=] = %[^;#]", key, value) == 2) {
@@ -700,25 +802,23 @@ static line_status iniparser_line(
 /*-------------------------------------------------------------------------*/
 /**
   @brief    Parse an ini file and return an allocated dictionary object
-  @param    ininame Name of the ini file to read.
+  @param    in File to read.
+  @param    ininame Name of the ini file to read (only used for nicer error messages)
   @return   Pointer to newly allocated dictionary
 
   This is the parser for ini files. This function is called, providing
-  the name of the file to be read. It returns a dictionary object that
-  should not be accessed directly, but through accessor functions
-  instead.
+  the file to be read. It returns a dictionary object that should not
+  be accessed directly, but through accessor functions instead.
 
   The returned dictionary must be freed using iniparser_freedict().
  */
 /*--------------------------------------------------------------------------*/
-dictionary * iniparser_load(const char * ininame)
+dictionary * iniparser_load_file(FILE * in, const char * ininame)
 {
-    FILE * in ;
-
     char line    [ASCIILINESZ+1] ;
     char section [ASCIILINESZ+1] ;
     char key     [ASCIILINESZ+1] ;
-    char tmp     [(ASCIILINESZ * 2) + 1] ;
+    char tmp     [(ASCIILINESZ * 2) + 2] ;
     char val     [ASCIILINESZ+1] ;
 
     int  last=0 ;
@@ -729,14 +829,8 @@ dictionary * iniparser_load(const char * ininame)
 
     dictionary * dict ;
 
-    if ((in=fopen(ininame, "r"))==NULL) {
-        iniparser_error_callback("iniparser: cannot open %s\n", ininame);
-        return NULL ;
-    }
-
     dict = dictionary_new(0) ;
     if (!dict) {
-        fclose(in);
         return NULL ;
     }
 
@@ -758,12 +852,11 @@ dictionary * iniparser_load(const char * ininame)
               ininame,
               lineno);
             dictionary_del(dict);
-            fclose(in);
             return NULL ;
         }
         /* Get rid of \n and spaces at end of line */
         while ((len>=0) &&
-                ((line[len]=='\n') || (isspace(line[len])))) {
+                ((line[len]=='\n') || (isspace((unsigned char)line[len])))) {
             line[len]=0 ;
             len-- ;
         }
@@ -815,9 +908,39 @@ dictionary * iniparser_load(const char * ininame)
         dictionary_del(dict);
         dict = NULL ;
     }
-    fclose(in);
     return dict ;
 }
+
+/*-------------------------------------------------------------------------*/
+/**
+  @brief    Parse an ini file and return an allocated dictionary object
+  @param    ininame Name of the ini file to read.
+  @return   Pointer to newly allocated dictionary
+
+  This is the parser for ini files. This function is called, providing
+  the name of the file to be read. It returns a dictionary object that
+  should not be accessed directly, but through accessor functions
+  instead.
+
+  The returned dictionary must be freed using iniparser_freedict().
+ */
+/*--------------------------------------------------------------------------*/
+dictionary * iniparser_load(const char * ininame)
+{
+    FILE * in ;
+    dictionary * dict ;
+
+    if ((in=fopen(ininame, "r"))==NULL) {
+        iniparser_error_callback("iniparser: cannot open %s\n", ininame);
+        return NULL ;
+    }
+
+    dict = iniparser_load_file(in, ininame);
+    fclose(in);
+
+    return dict ;
+}
+
 
 /*-------------------------------------------------------------------------*/
 /**

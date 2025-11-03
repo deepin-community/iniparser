@@ -1,10 +1,10 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: iniparser
 Upstream-Contact: Nicolas Devillard <ndevilla@free.fr>
-Source: https://github.com/ndevilla/iniparser
+Source: https://gitlab.com/iniparser/iniparser
 
 Files: *
-Copyright: 2000-2011, Nicolas Devillard <ndevilla@free.fr>
+Copyright: 2000-2014, Nicolas Devillard <ndevilla@free.fr>
 License: Expat
 
 Files: test/*
@@ -13,7 +13,7 @@ License: Zlib
 
 Files: debian/*
 Copyright: 2014, Klee Dienes <klee@mit.edu>
- 2017-2023, Salvatore Bonaccorso <carnil@debian.org>
+ 2017-2025, Salvatore Bonaccorso <carnil@debian.org>
 License: Expat
 
 License: Zlib

@@ -1,3 +1,10 @@
 usr/include/*
+usr/lib/*/cmake/iniparser/iniparser-config-version.cmake
+usr/lib/*/cmake/iniparser/iniparser-config.cmake
+usr/lib/*/cmake/iniparser/iniparser-sharedTargets-none.cmake
+usr/lib/*/cmake/iniparser/iniparser-sharedTargets.cmake
+usr/lib/*/cmake/iniparser/iniparser-staticTargets-none.cmake
+usr/lib/*/cmake/iniparser/iniparser-staticTargets.cmake
 usr/lib/*/lib*.a
 usr/lib/*/lib*.so
+usr/lib/*/pkgconfig/iniparser.pc
