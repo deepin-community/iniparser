@@ -1,3 +1,15 @@
+iniparser (4.1-7deepin2) unstable; urgency=medium
+
+  * fix(cve): CVE-2025-0633
+
+ -- deepin-ci-robot <packages@deepin.org>  Thu, 16 Jul 2026 21:53:35 +0800
+
+iniparser (4.1-7deepin1) unstable; urgency=medium
+
+  * fix(cve): CVE-2025-0633
+
+ -- deepin-ci-robot <packages@deepin.org>  Thu, 16 Jul 2026 21:53:24 +0800
+
 iniparser (4.1-7) unstable; urgency=medium
 
   * Handle null return from iniparser_getstring (CVE-2023-33461)
