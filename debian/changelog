@@ -1,3 +1,11 @@
+iniparser (4.1-8deepin1) unstable; urgency=medium
+
+  * Fix heap buffer overflow in iniparser_dumpsection_ini() (CVE-2025-0633)
+    - Add length check before sprintf to prevent buffer overflow
+    - Upstream: https://github.com/ndevilla/iniparser/commit/072a39a772a38c475e35a1be311304ca99e9de7f
+
+ -- hudeng <hudeng@deepin.org>  Sat, 25 Apr 2026 02:22:19 +0800
+
 iniparser (4.1-7) unstable; urgency=medium
 
   * Handle null return from iniparser_getstring (CVE-2023-33461)
