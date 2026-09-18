@@ -5,3 +5,5 @@ Updated-test-for-when-long-int-is-not-8-byte.patch
 Don-t-send-a-const-ptr-to-asprintf.patch
 test-testiniparser.c-fix-missing-comma-in-token-test.patch
 Handle-null-return-from-iniparser_getstring.patch
+CVE-2025-0633.patch
+CVE-2025-0633.patch
