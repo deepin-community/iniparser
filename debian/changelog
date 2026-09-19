@@ -1,3 +1,64 @@
+iniparser (4.2.6-1) unstable; urgency=medium
+
+  * New upstream version 4.2.6
+  * Update "README: Fix privacy-breach-generic caused by included images"
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Tue, 18 Feb 2025 22:44:45 +0100
+
+iniparser (4.2.5-1) unstable; urgency=medium
+
+  * New upstream version 4.2.5
+  * debian/rules: configure: Enable documentation build
+  * Update copyright years for debian/* packaging files
+  * debian/tests: Add testcase from upstream issue #175
+  * README: Fix privacy-breach-generic caused by included images
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 17 Jan 2025 13:54:23 +0100
+
+iniparser (4.2.4-1) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 26 Sep 2024 23:51:06 +0200
+
+iniparser (4.2.4-1~exp1) experimental; urgency=medium
+
+  * New upstream version 4.2.4
+  * libiniparser-dev: Include installation of pkgconfig and cmake files
+  * Rename runtime library binary package to libiniparser4 for upstream soname
+    adjustment
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 21 Sep 2024 20:53:08 +0200
+
+iniparser (4.2.1-1) unstable; urgency=medium
+
+  * New upstream version 4.2.1
+  * debian/control: Homepage: Reflect upstream move to gitlab
+  * debian/copyright: Source: Reflect upstream move to gitlab
+  * debian/u/metadata: Reflect upstream move to gitlab
+  * debian/watch: Move watch URL to gitlab.com hosting releases
+  * Mark cmake support patach as forwarded upstream
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Fri, 17 May 2024 11:31:27 +0200
+
+iniparser (4.2-1) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 11 May 2024 21:03:35 +0200
+
+iniparser (4.2-1~exp1) experimental; urgency=medium
+
+  * New upstream version 4.2
+  * Update copyright years for upstream files
+  * Declare compliance with Debian policy 4.7.0
+  * Update copyright years for debian/* packaging files
+  * libiniparser1: Update symbols for 4.2
+  * debian/tests: Add another autopkgtest to write ini file
+  * debian/control: Point homepage field to github repository
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sat, 11 May 2024 09:51:01 +0200
+
 iniparser (4.1-7) unstable; urgency=medium
 
   * Handle null return from iniparser_getstring (CVE-2023-33461)

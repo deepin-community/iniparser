@@ -1,4 +1,4 @@
-libiniparser.so.1 libiniparser1 #MINVER#
+libiniparser.so.4 libiniparser4 #MINVER#
 *  Build-Depends-Package: libiniparser-dev
  dictionary_del@Base 4.0
  dictionary_dump@Base 4.0
@@ -14,6 +14,7 @@ libiniparser.so.1 libiniparser1 #MINVER#
  iniparser_freedict@Base 4.0
  iniparser_getboolean@Base 4.0
  iniparser_getdouble@Base 4.0
+ iniparser_getint64@Base 4.2
  iniparser_getint@Base 4.0
  iniparser_getlongint@Base 4.1
  iniparser_getnsec@Base 4.0
@@ -21,7 +22,9 @@ libiniparser.so.1 libiniparser1 #MINVER#
  iniparser_getsecname@Base 4.0
  iniparser_getsecnkeys@Base 4.0
  iniparser_getstring@Base 4.0
+ iniparser_getuint64@Base 4.2
  iniparser_load@Base 4.0
+ iniparser_load_file@Base 4.2
  iniparser_set@Base 4.0
  iniparser_set_error_callback@Base 4.1
  iniparser_unset@Base 4.0

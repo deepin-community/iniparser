@@ -1,0 +1,47 @@
+From 84b9800e60b352269555e5b603881dee6710a1cd Mon Sep 17 00:00:00 2001
+From: Salvatore Bonaccorso <carnil@debian.org>
+Date: Fri, 17 Jan 2025 13:34:48 +0100
+Subject: [PATCH] README: Fix privacy-breach-generic caused by included images
+
+The upstream README.md includes external images for e.g. the pipeline
+status.
+
+Link: https://wiki.debian.org/PrivacyIssues
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+---
+ README.md | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/README.md b/README.md
+index 666053cfa40d..a5a8eda77473 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,5 @@
+-[![pipeline status](https://gitlab.com/iniparser/iniparser/badges/main/pipeline.svg)](https://gitlab.com/iniparser/iniparser/-/commits/main)
+-[![latest release](https://gitlab.com/iniparser/iniparser/-/badges/release.svg)](https://gitlab.com/iniparser/iniparser/-/releases)
++[pipeline status](https://gitlab.com/iniparser/iniparser/-/commits/main)
++[latest release](https://gitlab.com/iniparser/iniparser/-/releases)
+ 
+ # iniParser 4 #
+ 
+@@ -39,7 +39,7 @@ Key features:
+ 
+ iniParser is available in a number of package repositories:
+ 
+-[![Packaging status](https://repology.org/badge/vertical-allrepos/iniparser.svg)](https://repology.org/project/iniparser/versions)
++[Packaging status](https://repology.org/project/iniparser/versions)
+ 
+ ## MinGW
+ 
+@@ -156,7 +156,7 @@ See [LICENSE](LICENSE) for more details
+ 
+ ## Versions
+ 
+-[![latest release](https://gitlab.com/iniparser/iniparser/-/badges/release.svg)](https://gitlab.com/iniparser/iniparser/-/releases)
++[latest release](https://gitlab.com/iniparser/iniparser/-/releases)
+ 
+ - Since v4.2.x [Semantic Versioning](https://semver.org/) is applied.
+ - Version 4.0 introduced breaking changes in the api.
+-- 
+2.47.2
+

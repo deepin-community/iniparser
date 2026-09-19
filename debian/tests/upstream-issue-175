@@ -1,0 +1,29 @@
+#!/bin/sh -eu
+# https://gitlab.com/iniparser/iniparser/-/issues/175
+
+# testcase from upstream issue 175
+cat >>poc-175.c <<'EOF'
+#include <stdio.h>
+#include <string.h>
+
+#include "iniparser.h"
+
+int main(int argc, char **argv) {
+  dictionary *dict = dictionary_new(0);
+  char val[0x300] = {};
+  memset(val, '\\', sizeof(val)-1);
+  iniparser_set(dict, ":key1", val);
+
+  FILE *fout = fopen("/tmp/test", "wt");
+  iniparser_dump_ini(dict, fout);
+  fclose(fout);
+  iniparser_freedict(dict);
+  return 0;
+}
+EOF
+
+# compile code
+gcc -I/usr/include/iniparser -o poc-175 poc-175.c -liniparser
+
+# run the poc
+./poc-175

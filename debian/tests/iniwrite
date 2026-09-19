@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+TEMP=${AUTOPKGTEST_TMP:-${TMPDIR:-/tmp}}
+TDIR=$(mktemp -d $TEMP/smokeXXXXXX)
+
+# create temporary directory
+mkdir -p ${TDIR}
+
+# copy testfiles
+cp -a example/iniwrite.c ${TDIR}
+
+# change directory to temporary test directory
+cd ${TDIR}
+
+# compile iniwrite.c
+gcc -I/usr/include/iniparser -o iniwrite iniwrite.c -liniparser
+
+# run the iniwrite
+./iniwrite
